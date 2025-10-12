@@ -35,13 +35,6 @@ export const source = {
 		const src = await getSource();
 		return src.generateParams();
 	},
-	get pageTree() {
-		// This needs to be accessed synchronously, so we need a workaround
-		// For now, throw an error suggesting to use getSource() directly
-		throw new Error(
-			"pageTree must be accessed via: const source = await getSource(); source.pageTree",
-		);
-	},
 };
 
 async function createPayloadSource(): Promise<
