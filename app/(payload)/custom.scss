@@ -1,0 +1,372 @@
+:root {
+  // Color system from fumadocs - light mode
+  --theme-background: oklch(0.9873 0.0096 72.6642);
+  --theme-foreground: oklch(0.2197 0.0399 71.1681);
+  --theme-card: oklch(0.9997 0.0013 106.4229);
+  --theme-card-foreground: oklch(0.2197 0.0399 71.1681);
+  --theme-popover: oklch(0.9997 0.0013 106.4229);
+  --theme-popover-foreground: oklch(0 0 0);
+  --theme-primary: oklch(0.6751 0.1147 227.8873);
+  --theme-primary-foreground: oklch(0.9873 0.0096 72.6642);
+  --theme-secondary: oklch(0.6323 0.1274 149.9814);
+  --theme-secondary-foreground: oklch(0.926 0.0291 72.4662);
+  --theme-muted: oklch(0.9551 0 0);
+  --theme-muted-foreground: oklch(0.3211 0 0);
+  --theme-accent: oklch(0.7496 0.1355 73.2693);
+  --theme-accent-foreground: oklch(0.9873 0.0096 72.6642);
+  --theme-destructive: oklch(0.6368 0.2078 25.3313);
+  --theme-destructive-foreground: oklch(1 0 0);
+  --theme-border: oklch(0.2197 0.0399 71.1681);
+  --theme-input: oklch(0.5555 0 0);
+  --theme-ring: oklch(0.7853 0.1041 274.7134);
+
+  // Payload-specific theme elevations (lighter shades for UI elements)
+  --theme-elevation-0: oklch(1 0 0);
+  --theme-elevation-50: oklch(0.9877 0.0057 264.5329);
+  --theme-elevation-100: oklch(0.9551 0 0);
+  --theme-elevation-150: oklch(0.926 0.0291 72.4662);
+  --theme-elevation-200: oklch(0.8452 0 0);
+  --theme-elevation-300: oklch(0.5727 0 0);
+  --theme-elevation-400: oklch(0.4495 0 0);
+  --theme-elevation-500: oklch(0.3867 0 0);
+  --theme-elevation-600: oklch(0.3211 0 0);
+  --theme-elevation-700: oklch(0.2197 0.0399 71.1681);
+  --theme-elevation-800: oklch(0.1964 0.0125 270.7079);
+  --theme-elevation-900: oklch(0.1 0 0);
+
+  // Text colors
+  --theme-text: oklch(0.2197 0.0399 71.1681);
+  --theme-text-secondary: oklch(0.5727 0 0);
+
+  // System fonts from fumadocs
+  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "DM Sans", Georgia, "Times New Roman", serif;
+  --font-mono: "Space Mono", "SF Mono", "Monaco", "Inconsolata", monospace;
+
+  // Border radius
+  --radius: 1.2rem;
+  --border-radius-sm: calc(var(--radius) - 4px);
+  --border-radius-md: calc(var(--radius) - 2px);
+  --border-radius-lg: var(--radius);
+  --border-radius-xl: calc(var(--radius) + 4px);
+}
+
+.dark {
+  // Color system from fumadocs - dark mode
+  --theme-background: oklch(0 0 0);
+  --theme-foreground: oklch(1 0 0);
+  --theme-card: oklch(0.2455 0.0217 257.2823);
+  --theme-card-foreground: oklch(1 0 0);
+  --theme-popover: oklch(0.2455 0.0217 257.2823);
+  --theme-popover-foreground: oklch(1 0 0);
+  --theme-primary: oklch(0.6801 0.1583 276.9349);
+  --theme-primary-foreground: oklch(0 0 0);
+  --theme-secondary: oklch(0.7845 0.1325 181.912);
+  --theme-secondary-foreground: oklch(0 0 0);
+  --theme-muted: oklch(0.3211 0 0);
+  --theme-muted-foreground: oklch(0.8452 0 0);
+  --theme-accent: oklch(0.879 0.1534 91.6054);
+  --theme-accent-foreground: oklch(0 0 0);
+  --theme-destructive: oklch(0.7106 0.1661 22.2162);
+  --theme-destructive-foreground: oklch(0 0 0);
+  --theme-border: oklch(0.4459 0 0);
+  --theme-input: oklch(1 0 0);
+  --theme-ring: oklch(0.6801 0.1583 276.9349);
+
+  // Payload-specific theme elevations for dark mode
+  --theme-elevation-0: oklch(0.1964 0.0125 270.7079);
+  --theme-elevation-50: oklch(0.2197 0.0399 71.1681);
+  --theme-elevation-100: oklch(0.2455 0.0217 257.2823);
+  --theme-elevation-150: oklch(0.3211 0 0);
+  --theme-elevation-200: oklch(0.3867 0 0);
+  --theme-elevation-300: oklch(0.4495 0 0);
+  --theme-elevation-400: oklch(0.5727 0 0);
+  --theme-elevation-500: oklch(0.8452 0 0);
+  --theme-elevation-600: oklch(0.9551 0 0);
+  --theme-elevation-700: oklch(1 0 0);
+  --theme-elevation-800: oklch(1 0 0);
+  --theme-elevation-900: oklch(1 0 0);
+
+  // Text colors for dark mode
+  --theme-text: oklch(1 0 0);
+  --theme-text-secondary: oklch(0.8452 0 0);
+}
+
+// Apply custom styling to Payload components
+body {
+  font-family: var(--font-body);
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+}
+
+// Style headings with your font
+h1, h2, h3, h4, h5, h6,
+.payload-heading {
+  font-family: var(--font-heading);
+}
+
+// Customize button styles to match fumadocs UI
+.btn,
+.payload__button {
+  border-radius: var(--border-radius-lg) !important;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+
+  &--style-primary {
+    background-color: var(--theme-primary) !important;
+    color: var(--theme-primary-foreground) !important;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+  }
+
+  &--style-secondary {
+    background-color: var(--theme-secondary) !important;
+    color: var(--theme-secondary-foreground) !important;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &--style-success {
+    background-color: var(--theme-accent) !important;
+    color: var(--theme-accent-foreground) !important;
+  }
+
+  &--style-error,
+  &--style-danger {
+    background-color: var(--theme-destructive) !important;
+    color: var(--theme-destructive-foreground) !important;
+  }
+}
+
+// Customize form inputs
+.input,
+.payload__input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  border-radius: var(--border-radius-md) !important;
+  font-family: var(--font-body);
+  border-color: var(--theme-border);
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+
+  &:focus {
+    border-color: var(--theme-primary);
+    outline: 2px solid var(--theme-ring);
+    outline-offset: 2px;
+  }
+}
+
+// Customize the nav with your branding
+.nav__brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--theme-primary);
+}
+
+// Add hover effects consistent with your design
+.nav__link:hover,
+.payload__link:hover {
+  color: var(--theme-primary) !important;
+  background-color: var(--theme-elevation-100);
+}
+
+// Style custom nav link wrapper
+.nav-link-wrapper {
+  border-top: 1px solid var(--theme-border);
+
+  .nav__link {
+    &:hover {
+      background-color: var(--theme-elevation-100);
+      color: var(--theme-primary) !important;
+
+      svg {
+        color: var(--theme-primary) !important;
+      }
+    }
+  }
+}
+
+// Customize cards and panels
+.card,
+.payload__card,
+.render-fields,
+.collection-edit,
+.collection-list {
+  border-radius: var(--border-radius-lg) !important;
+  background-color: var(--theme-card);
+  border-color: var(--theme-border);
+}
+
+// Style the dashboard to feel more branded
+.dashboard__wrapper {
+  background-color: var(--theme-background);
+
+  .dashboard__label {
+    font-family: var(--font-heading);
+    color: var(--theme-text);
+  }
+}
+
+// Style table rows
+.table {
+  background-color: var(--theme-card);
+
+  tr {
+    border-color: var(--theme-border);
+
+    &:hover {
+      background-color: var(--theme-elevation-100);
+    }
+  }
+
+  th {
+    font-family: var(--font-heading);
+    color: var(--theme-text);
+    border-color: var(--theme-border);
+  }
+
+  td {
+    color: var(--theme-text-secondary);
+    border-color: var(--theme-border);
+  }
+}
+
+// Sidebar styling
+.nav,
+.template-default__nav {
+  background-color: var(--theme-elevation-50);
+  border-color: var(--theme-border);
+}
+
+// Modal/Popup styling
+.popup,
+.modal,
+.drawer {
+  background-color: var(--theme-popover);
+  border-radius: var(--border-radius-lg);
+  border-color: var(--theme-border);
+  color: var(--theme-popover-foreground);
+}
+
+// Notification/Toast styling
+.toast,
+.notification {
+  border-radius: var(--border-radius-md);
+  background-color: var(--theme-card);
+  border-color: var(--theme-border);
+
+  &--success {
+    background-color: var(--theme-accent);
+    color: var(--theme-accent-foreground);
+  }
+
+  &--error {
+    background-color: var(--theme-destructive);
+    color: var(--theme-destructive-foreground);
+  }
+}
+
+// Rich text editor styling
+.rich-text-editor,
+.lexical-editor {
+  border-radius: var(--border-radius-md);
+  border-color: var(--theme-border);
+  background-color: var(--theme-background);
+
+  code {
+    font-family: var(--font-mono);
+    background-color: var(--theme-muted);
+    color: var(--theme-muted-foreground);
+    border-radius: var(--border-radius-sm);
+    padding: 0.125rem 0.25rem;
+  }
+}
+
+// Tabs styling
+.tabs {
+  border-color: var(--theme-border);
+
+  &__tab {
+    &:hover {
+      background-color: var(--theme-elevation-100);
+      color: var(--theme-primary);
+    }
+
+    &--active {
+      background-color: var(--theme-primary);
+      color: var(--theme-primary-foreground);
+    }
+  }
+}
+
+// Ensure consistent border radius across all components
+* {
+  &[class*="border-radius"],
+  &[class*="rounded"] {
+    border-radius: var(--border-radius-lg) !important;
+  }
+}
+
+// Badge styling
+.badge,
+.pill {
+  border-radius: var(--border-radius-xl);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+
+  &--success {
+    background-color: var(--theme-accent);
+    color: var(--theme-accent-foreground);
+  }
+
+  &--error {
+    background-color: var(--theme-destructive);
+    color: var(--theme-destructive-foreground);
+  }
+
+  &--primary {
+    background-color: var(--theme-primary);
+    color: var(--theme-primary-foreground);
+  }
+}
+
+// Loading/Spinner styling
+.spinner,
+.loading {
+  color: var(--theme-primary);
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--theme-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--theme-muted);
+  border-radius: var(--border-radius-md);
+
+  &:hover {
+    background-color: var(--theme-primary);
+  }
+}
+
+// Focus visible styling for accessibility
+*:focus-visible {
+  outline: 2px solid var(--theme-ring);
+  outline-offset: 2px;
+}
