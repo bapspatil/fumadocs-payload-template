@@ -317,11 +317,13 @@ Set `S3_ENABLED=false` to use local storage for development.
 
 ## Deployment
 
-### Vercel Deployment
+This project supports **dual deployment** - you can deploy to either Vercel (using MongoDB) or Cloudflare Workers (using D1/SQLite). The configuration automatically adapts based on the `DEPLOYMENT_TARGET` environment variable.
 
-1. **Push to GitHub**
-2. **Import to Vercel**
-3. **Add Environment Variables**:
+### Vercel Deployment (Primary - MongoDB)
+
+1. **Push to GitHub**.
+2. **Import to Vercel** via the Vercel dashboard.
+3. **Configure Environment Variables** (Project → Settings → Environment Variables):
    ```
    PAYLOAD_SECRET=<random-string>
    PAYLOAD_DATABASE_URI=<mongodb-atlas-uri>
@@ -332,8 +334,70 @@ Set `S3_ENABLED=false` to use local storage for development.
    S3_ACCESS_KEY_ID=<key>
    S3_SECRET_ACCESS_KEY=<secret>
    ```
+4. **Trigger a deploy**. Vercel builds the Next.js app and exposes `/admin` for Payload CMS.
 
-4. **Deploy**
+### Cloudflare Workers Deployment (Secondary - D1/SQLite)
+
+This repo ships with [open-next for Cloudflare](https://github.com/opennextjs/opennextjs-cloudflare) tooling and a `wrangler.jsonc` worker configuration.
+
+**Setup Steps:**
+
+1. **Create D1 Database**:
+   ```bash
+   bunx wrangler d1 create payload-db
+   ```
+   Copy the `database_id` from the output and update `wrangler.jsonc`:
+   ```jsonc
+   "d1_databases": [
+     {
+       "binding": "DB",
+       "database_name": "payload-db",
+       "database_id": "YOUR_D1_DATABASE_ID" // Replace this
+     }
+   ]
+   ```
+
+2. **Create R2 Bucket**:
+   ```bash
+   bunx wrangler r2 bucket create payload-media
+   ```
+
+3. **Set Environment Variables**:
+   Create a `.env` file and uncomment the Cloudflare Workers section from `.env.example`:
+   ```env
+   DEPLOYMENT_TARGET=cloudflare
+   PAYLOAD_CLOUDFLARE_D1_URL=file:./payload.db  # For local dev
+   PAYLOAD_SECRET=<random-string>
+   NEXT_PUBLIC_APP_URL=https://your-worker.workers.dev
+   PAYLOAD_CLOUDFLARE_R2_BUCKET=payload-media
+   ```
+
+4. **Run Database Migrations** (if using schema changes):
+   ```bash
+   bunx wrangler d1 execute payload-db --local --file=./migrations/0001_initial.sql
+   ```
+
+5. **Authenticate Wrangler**:
+   ```bash
+   bunx wrangler login
+   ```
+
+6. **Preview locally**:
+   ```bash
+   bun run cf-preview
+   ```
+
+7. **Deploy to Workers**:
+   ```bash
+   bun run cf-deploy
+   ```
+
+**Important Notes:**
+- Cloudflare Workers uses **D1 (SQLite)** instead of MongoDB
+- Storage uses **R2** instead of S3
+- The configuration automatically switches based on `DEPLOYMENT_TARGET=cloudflare`
+- D1 and R2 bindings are automatically available in the Workers runtime
+- For production secrets, use: `bunx wrangler secret put SECRET_NAME`
 
 ### Database Setup (MongoDB Atlas)
 
@@ -435,6 +499,10 @@ bun run dev          # Development server
 bun run build        # Production build
 bun run start        # Start production server
 bun run payload      # Payload CLI commands
+bun run cf-preview   # Build and run Worker preview locally
+bun run cf-deploy    # Build and deploy Worker to Cloudflare
+bun run cf-upload    # Upload static assets for Worker deployments
+bun run cf-typegen   # Generate Cloudflare env typings
 ```
 
 ## Learn More

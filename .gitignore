@@ -42,6 +42,7 @@ wrangler-configuration.d.ts
 cloudflare-env.d.ts
 mydb.sqlite
 local.db
+payload.db
 
 # Sentry Config File
 .env.sentry-build-plugin

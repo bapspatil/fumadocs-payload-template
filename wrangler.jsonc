@@ -1,0 +1,38 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "main": ".open-next/worker.js",
+    "name": "fumadocs-payload-template",
+    "compatibility_date": "2025-10-12",
+    "compatibility_flags": [
+        "nodejs_compat",
+        "global_fetch_strictly_public"
+    ],
+    "assets": {
+        "directory": ".open-next/assets",
+        "binding": "ASSETS"
+    },
+    "services": [
+        {
+            "binding": "WORKER_SELF_REFERENCE",
+            "service": "fumadocs-payload-template"
+        }
+    ],
+    "d1_databases": [
+        {
+            "binding": "PAYLOAD_CLOUDFLARE_D1_BINDING",
+            "database_name": "payload-db",
+            "database_id": "YOUR_D1_DATABASE_ID"
+        }
+    ],
+    "r2_buckets": [
+        {
+            "binding": "PAYLOAD_CLOUDFLARE_R2_BUCKET",
+            "bucket_name": "payload-media"
+        }
+    ],
+    "dev": {
+        "port": 3000,
+        "local_protocol": "http",
+        "upstream_protocol": "https"
+    }
+}
