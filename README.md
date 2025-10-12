@@ -2,6 +2,10 @@
 
 This example demonstrates how to integrate [Payload CMS](https://payloadcms.com) with Fumadocs for content management. It showcases a complete documentation site powered by Payload CMS with a custom fumadocs source adapter.
 
+## Demo
+
+<video src="./public/demo.mp4" controls width="100%" muted playsinline></video>
+
 ## What's Included
 
 - ✅ **Payload CMS Integration**: Full headless CMS backend for documentation
