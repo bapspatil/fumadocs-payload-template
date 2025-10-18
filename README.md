@@ -1,6 +1,6 @@
-# Payload CMS Example
+# Fumadocs x Payload CMS Template
 
-This example demonstrates how to integrate [Payload CMS](https://payloadcms.com) with Fumadocs for content management. It showcases a complete documentation site powered by Payload CMS with a custom fumadocs source adapter.
+This example demonstrates how to integrate [Payload CMS](https://payloadcms.com) with [Fumadocs](https://fumadocs.dev/) for content management. It showcases a complete documentation site powered by Payload CMS with a custom fumadocs source adapter.
 
 [Demo Video](https://github.com/bapspatil/fumadocs-payload-template/raw/refs/heads/main/public/demo.mp4)
 
@@ -8,6 +8,7 @@ This example demonstrates how to integrate [Payload CMS](https://payloadcms.com)
 
 - **Payload CMS Integration**: Full headless CMS backend for documentation
 - **Custom Source Adapter**: Transform Payload data into fumadocs format
+- **Role-Based Access Control (RBAC)**: Owner, Admin and User roles for RBAC
 - **Sidebar Tabs**: Each category becomes an isolated sidebar tab
 - **Hierarchical Docs**: Parent/child relationships for nested documentation
 - **Lexical Editor**: Rich text editing with HTML serialization
@@ -16,7 +17,6 @@ This example demonstrates how to integrate [Payload CMS](https://payloadcms.com)
 - **Search**: Built-in search via fumadocs
 - **LLM Routes**: Auto-generated `/llms.txt` and `/llms-full.txt`
 - **OG Images**: Dynamic OpenGraph image generation
-- **Public Access**: No authentication required (docs are public)
 
 ## Project Structure
 
