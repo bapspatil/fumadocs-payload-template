@@ -6,17 +6,17 @@ This example demonstrates how to integrate [Payload CMS](https://payloadcms.com)
 
 ## What's Included
 
-- ✅ **Payload CMS Integration**: Full headless CMS backend for documentation
-- ✅ **Custom Source Adapter**: Transform Payload data into fumadocs format
-- ✅ **Sidebar Tabs**: Each category becomes an isolated sidebar tab
-- ✅ **Hierarchical Docs**: Parent/child relationships for nested documentation
-- ✅ **Lexical Editor**: Rich text editing with HTML serialization
-- ✅ **MongoDB Storage**: Persistent database storage
-- ✅ **S3 Media**: Optional S3-compatible media storage
-- ✅ **Search**: Built-in search via fumadocs
-- ✅ **LLM Routes**: Auto-generated `/llms.txt` and `/llms-full.txt`
-- ✅ **OG Images**: Dynamic OpenGraph image generation
-- ✅ **Public Access**: No authentication required (docs are public)
+- **Payload CMS Integration**: Full headless CMS backend for documentation
+- **Custom Source Adapter**: Transform Payload data into fumadocs format
+- **Sidebar Tabs**: Each category becomes an isolated sidebar tab
+- **Hierarchical Docs**: Parent/child relationships for nested documentation
+- **Lexical Editor**: Rich text editing with HTML serialization
+- **MongoDB Storage**: Persistent database storage
+- **S3 Media**: Optional S3-compatible media storage
+- **Search**: Built-in search via fumadocs
+- **LLM Routes**: Auto-generated `/llms.txt` and `/llms-full.txt`
+- **OG Images**: Dynamic OpenGraph image generation
+- **Public Access**: No authentication required (docs are public)
 
 ## Project Structure
 
