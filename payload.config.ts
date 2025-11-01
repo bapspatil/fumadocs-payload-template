@@ -4,9 +4,11 @@ import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { importExportPlugin } from "@payloadcms/plugin-import-export";
 import { searchPlugin } from "@payloadcms/plugin-search";
+import { mcpPlugin } from "@payloadcms/plugin-mcp";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
 import { buildConfig } from "payload";
+import { databaseKVAdapter } from "payload";
 import sharp from "sharp";
 import { Categories } from "./collections/Categories";
 import { Docs } from "./collections/Docs";
@@ -79,9 +81,18 @@ export default buildConfig({
 	graphQL: {
 		disable: false,
 	},
+	kv: databaseKVAdapter(),
 	plugins: [
 		importExportPlugin({
 			collections: ["docs", "categories"],
+		}),
+		mcpPlugin({
+			collections: {
+				docs: {
+					enabled: true,
+					description: "View and manage your documentation.",
+				},
+			},
 		}),
 		searchPlugin({
 			collections: ["docs"],
