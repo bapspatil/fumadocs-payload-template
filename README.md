@@ -12,9 +12,10 @@ This example demonstrates how to integrate [Payload CMS](https://payloadcms.com)
 - **Sidebar Tabs**: Each category becomes an isolated sidebar tab
 - **Hierarchical Docs**: Parent/child relationships for nested documentation
 - **Lexical Editor**: Rich text editing with HTML serialization
-- **MongoDB Storage**: Persistent database storage
+- **MongoDB Storage**: Persistent database storage with KV adapter support
 - **S3 Media**: Optional S3-compatible media storage
 - **Search**: Built-in search via fumadocs
+- **MCP Support**: Model Context Protocol integration for AI/LLM interactions
 - **LLM Routes**: Auto-generated `/llms.txt` and `/llms-full.txt`
 - **OG Images**: Dynamic OpenGraph image generation
 
@@ -115,6 +116,7 @@ Documentation pages:
 - `parent`: Optional parent doc (for nesting)
 - `order`: Sort order within category (ascending)
 - `_status`: Draft or Published
+- **MCP Enabled**: Exposed through Model Context Protocol for AI access
 
 ### Media
 File uploads:
@@ -279,6 +281,26 @@ The serializer handles:
 - Custom Lexical nodes
 - Table of contents extraction
 
+### Database KV Adapter
+
+The template includes support for Payload's database KV adapter, which provides:
+- **Key-Value Storage**: Efficient storage for cache, sessions, and temporary data
+- **Performance**: Faster access to frequently used data
+- **Scalability**: Better handling of high-traffic scenarios
+- **Integration**: Seamless integration with MongoDB for persistent storage
+
+The KV adapter is automatically configured and works alongside your main MongoDB database for optimal performance.
+
+### MCP (Model Context Protocol) Support
+
+This template includes MCP integration for enhanced AI/LLM capabilities:
+- **AI-Friendly Content**: Structured data access for AI models
+- **Standardized Protocol**: Uses industry-standard Model Context Protocol
+- **Documentation Access**: Enables AI systems to query and understand your documentation
+- **Enhanced Search**: Improves AI-powered search and content discovery
+
+The MCP plugin exposes your documentation collections through a standardized API that AI systems can consume, making your content more accessible to LLMs and other AI tools.
+
 ### Database Depth
 
 When querying Payload, use `depth: 2` for collections:
@@ -441,6 +463,8 @@ bun run payload      # Payload CLI commands
 - [Payload CMS Documentation](https://payloadcms.com/docs)
 - [Source API Reference](https://fumadocs.vercel.app/docs/headless/source-api)
 - [Lexical Editor](https://lexical.dev)
+- [Payload MCP Plugin](https://payloadcms.com/docs/plugins/mcp)
+- [Payload Database KV Adapter](https://payloadcms.com/docs/configuration/database-adapters#database-kv-adapter)
 
 ## License
 
