@@ -1,6 +1,6 @@
 {
-  "name": "example-payload-cms",
-  "version": "0.0.0",
+  "name": "fumadocs-payload-template",
+  "version": "1.2.0",
   "type": "module",
   "private": true,
   "scripts": {
