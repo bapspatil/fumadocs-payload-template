@@ -1,31 +1,30 @@
 {
-	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"extends": ["ultracite"],
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "double"
-		}
-	},
-	"linter": {
-		"rules": {
-			"complexity": {
-				"noExcessiveLinesPerFunction": "off",
-				"noExcessiveCognitiveComplexity": "off"
-			},
-			"style": {
-				"noMagicNumbers": "off",
-				"useNamingConvention": "off"
-			},
-			"correctness": {
-				"noUnusedVariables": "off"
-			},
-			"suspicious": {
-				"noUnknownAtRules": "off"
-			},
-			"nursery": {
-				"useImageSize": "off",
-				"useConsistentTypeDefinitions": "off"
-			}
-		}
-	}
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": [
+    "ultracite/biome/core",
+    "ultracite/biome/next"
+  ],
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double"
+    }
+  },
+  "linter": {
+    "rules": {
+      "complexity": {
+        "noExcessiveLinesPerFunction": "off",
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      "style": {
+        "noMagicNumbers": "off",
+        "useNamingConvention": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "off"
+      },
+      "suspicious": {
+        "noUnknownAtRules": "off"
+      }
+    }
+  }
 }
