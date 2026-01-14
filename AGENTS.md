@@ -1,6 +1,6 @@
 # Ultracite Code Standards
 
-This project uses **Ultracite**, a zero-config Biome preset that enforces strict code quality standards through automated formatting and linting.
+This project uses **Ultracite**, a zero-config preset that enforces strict code quality standards through automated formatting and linting.
 
 ## Quick Reference
 
@@ -8,7 +8,7 @@ This project uses **Ultracite**, a zero-config Biome preset that enforces strict
 - **Check for issues**: `pnpm dlx ultracite check`
 - **Diagnose setup**: `pnpm dlx ultracite doctor`
 
-Biome (the underlying engine) provides extremely fast Rust-based linting and formatting. Most issues are automatically fixable.
+Biome (the underlying engine) provides robust linting and formatting. Most issues are automatically fixable.
 
 ---
 
