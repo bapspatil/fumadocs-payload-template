@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { Book, Home, Settings } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 
 /**
  * Shared layout configurations
@@ -9,40 +9,40 @@ import { Book, Home, Settings } from "lucide-react";
  * Docs Layout: app/docs/layout.tsx
  */
 export const baseOptions: BaseLayoutProps = {
-	themeSwitch: {
-		enabled: true,
-		mode: "light-dark-system",
-	},
-	nav: {
-		title: (
-			<div className="flex items-center gap-2">
-				<span className="font-bold font-serif tracking-wide">FumaPayload</span>
-			</div>
-		),
-	},
-	links: [
-		{
-			text: "Home",
-			url: "/",
-			active: "url",
-			icon: <Home />,
-		},
-		{
-			text: "Admin",
-			url: "/admin",
-			active: "url",
-			icon: <Settings />,
-		},
-	],
+  themeSwitch: {
+    enabled: true,
+    mode: "light-dark-system",
+  },
+  nav: {
+    title: (
+      <div className="flex items-center gap-2">
+        <span className="font-bold font-serif tracking-wide">FumaPayload</span>
+      </div>
+    ),
+  },
+  links: [
+    {
+      text: "Home",
+      url: "/",
+      active: "url",
+      icon: <Home />,
+    },
+    {
+      text: "Admin",
+      url: "/admin",
+      active: "url",
+      icon: <Settings />,
+    },
+  ],
 };
 
 export const homeOptions: BaseLayoutProps = {
-	...baseOptions,
-	links: [
-		{
-			text: "Admin",
-			url: "/admin",
-			active: "url",
-		},
-	],
+  ...baseOptions,
+  links: [
+    {
+      text: "Admin",
+      url: "/admin",
+      active: "url",
+    },
+  ],
 };

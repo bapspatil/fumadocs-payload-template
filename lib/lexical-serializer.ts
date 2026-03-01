@@ -2,7 +2,6 @@ import type {
   DefaultNodeTypes,
   SerializedRelationshipNode,
   SerializedUploadNode,
-  SerializedLinkNode,
 } from "@payloadcms/richtext-lexical";
 import { getPayloadPopulateFn } from "@payloadcms/richtext-lexical";
 import {
@@ -301,8 +300,7 @@ function createConverterOverrides(
     },
     link: async (args) => {
       const { node } = args;
-      const url =
-        typeof node.fields?.url === "string" ? node.fields.url : "";
+      const url = typeof node.fields?.url === "string" ? node.fields.url : "";
 
       // Check if the URL is a Vimeo link
       const vimeoId = extractVimeoId(url);

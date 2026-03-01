@@ -7,23 +7,28 @@ export const Media: CollectionConfig = {
     read: () => true,
     // Owner and admins can upload media
     create: ({ req: { user } }) => {
-      return Boolean(user?.role === "owner" || user?.role === "admin");
+      if (!(user && "role" in user)) return false;
+      return user.role === "owner" || user.role === "admin";
     },
     // Owner and admins can update media
     update: ({ req: { user } }) => {
-      return Boolean(user?.role === "owner" || user?.role === "admin");
+      if (!(user && "role" in user)) return false;
+      return user.role === "owner" || user.role === "admin";
     },
-    // Only owner can delete media
-    delete: ({ req: { user } }) => {
-      return user?.role === "owner";
+    // Owner can always delete; admins can soft-delete (trash) but not permanently delete
+    delete: ({ req: { user }, data }) => {
+      if (!(user && "role" in user)) return false;
+      if (user.role === "owner") return true;
+      if (user.role === "admin") return Boolean(data?.deletedAt);
+      return false;
     },
   },
   fields: [
     {
-      name: 'alt',
-      type: 'text',
+      name: "alt",
+      type: "text",
       required: true,
     },
   ],
   upload: true,
-}
+};

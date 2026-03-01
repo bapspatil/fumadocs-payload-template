@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ slug: string[] }> },
+  { params }: { params: Promise<{ slug: string[] }> }
 ) {
   const { slug } = await params;
   // Remove "image.png" from the end
@@ -78,7 +78,7 @@ export async function GET(
       {
         width: 1200,
         height: 630,
-      },
+      }
     );
   }
 

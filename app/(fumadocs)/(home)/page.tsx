@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 import { getPayload } from "payload";
 import {
   Card,
@@ -5,11 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
-import Image from "next/image";
 import VideoJSPlayer from "@/components/videojs-player";
-import type { Media } from "@/payload-types";
 import config from "@/payload.config";
+import type { Media } from "@/payload-types";
 
 const demoVideoHtml = `
   <div class="w-full">
@@ -79,7 +79,7 @@ export default async function HomePage() {
     <main className="flex flex-1 flex-col px-4 py-4 md:px-8 md:py-16">
       <div className="mx-auto flex max-w-6xl flex-1 flex-col justify-center gap-4 text-center">
         <div className="mb-4 flex items-center justify-center gap-2 md:gap-4">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold tracking-wide">
+          <h1 className="font-bold font-serif text-4xl tracking-wide md:text-5xl">
             Documentation
           </h1>
         </div>
@@ -93,7 +93,7 @@ export default async function HomePage() {
               <VideoJSPlayer html={demoVideoHtml} />
             </div>
             <div className="flex w-full flex-col justify-center gap-4 md:flex-row md:flex-wrap md:gap-6">
-              <Link href="/admin" className="block w-full md:w-80">
+              <Link className="block w-full md:w-80" href="/admin">
                 <Card className="transition-all hover:border-primary/50 hover:shadow-lg">
                   <CardHeader>
                     <CardTitle>Get Started</CardTitle>
@@ -124,9 +124,9 @@ export default async function HomePage() {
 
               return (
                 <Link
-                  key={category.id}
-                  href={href}
                   className="block w-full md:w-80"
+                  href={href}
+                  key={category.id}
                 >
                   <Card className="transition-all hover:border-primary/50 hover:shadow-lg">
                     <CardHeader>
@@ -154,14 +154,14 @@ export default async function HomePage() {
         )}
       </div>
 
-      <footer className="mt-16 py-6 text-center border-t border-fd-border">
-        <p className="text-sm text-fd-muted-foreground">
+      <footer className="mt-16 border-fd-border border-t py-6 text-center">
+        <p className="text-fd-muted-foreground text-sm">
           Template by{" "}
           <a
+            className="font-medium text-fd-foreground underline decoration-fd-primary/30 transition-colors hover:text-fd-primary hover:decoration-fd-primary"
             href="https://www.bapspatil.com"
-            target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-fd-foreground hover:text-fd-primary transition-colors underline decoration-fd-primary/30 hover:decoration-fd-primary"
+            target="_blank"
           >
             Bapusaheb Patil
           </a>

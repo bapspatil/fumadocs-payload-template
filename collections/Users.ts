@@ -9,7 +9,8 @@ export const Users: CollectionConfig = {
   access: {
     // Only owner and admins can access the admin panel
     admin: ({ req: { user } }) => {
-      return Boolean(user?.role === "owner" || user?.role === "admin");
+      if (!(user && "role" in user)) return false;
+      return user.role === "owner" || user.role === "admin";
     },
     // All authenticated users can read user data
     read: ({ req: { user } }) => {
@@ -17,25 +18,18 @@ export const Users: CollectionConfig = {
     },
     // Owner can create any user, admins can only create normal users
     create: ({ req: { user } }) => {
-      // Owner can create any user
-      if (user?.role === "owner") {
-        return true;
-      }
-      // Admins can create users (but hooks will ensure they can only create normal users)
-      if (user?.role === "admin") {
-        return true;
-      }
+      if (!(user && "role" in user)) return false;
+      if (user.role === "owner") return true;
+      if (user.role === "admin") return true;
       return false;
     },
     // Owner can update any user, admins can update normal users, users can update themselves
     update: ({ req: { user }, id }) => {
+      if (!(user && "role" in user)) return false;
       // Owner can update anyone
-      if (user?.role === "owner") {
-        return true;
-      }
+      if (user.role === "owner") return true;
       // Admins can update users, but not other admins or owners (enforced by query constraint)
-      if (user?.role === "admin") {
-        // Return a query constraint to only allow updating normal users
+      if (user.role === "admin") {
         return {
           role: {
             equals: "user",
@@ -43,14 +37,13 @@ export const Users: CollectionConfig = {
         };
       }
       // Normal users can only update themselves (non-role fields)
-      return user?.id === id;
+      return user.id === id;
     },
     // Owner can delete any user except themselves, admins cannot delete
     delete: ({ req: { user }, id }) => {
+      if (!(user && "role" in user)) return false;
       // Owner can delete anyone except themselves
-      if (user?.role === "owner") {
-        return user.id !== id;
-      }
+      if (user.role === "owner") return user.id !== id;
       return false;
     },
   },
@@ -78,7 +71,9 @@ export const Users: CollectionConfig = {
           // If an admin is trying to create a user, prevent them from creating admins or owners
           const currentUser = args.req.user;
           if (
-            currentUser?.role === "admin" &&
+            currentUser &&
+            "role" in currentUser &&
+            currentUser.role === "admin" &&
             data?.role &&
             data.role !== "user"
           ) {
@@ -505,7 +500,8 @@ export const Users: CollectionConfig = {
               data: {
                 title: "Managing Content",
                 slug: "managing-content",
-                description: "Learn how to create and organize your documentation",
+                description:
+                  "Learn how to create and organize your documentation",
                 category: category.id,
                 order: 3,
                 content: {
@@ -1022,10 +1018,10 @@ export const Users: CollectionConfig = {
       access: {
         // Only owner can modify roles
         create: ({ req: { user } }) => {
-          return user?.role === "owner";
+          return Boolean(user && "role" in user && user.role === "owner");
         },
         update: ({ req: { user } }) => {
-          return user?.role === "owner";
+          return Boolean(user && "role" in user && user.role === "owner");
         },
         // Everyone can read roles
         read: () => true,
@@ -1035,7 +1031,7 @@ export const Users: CollectionConfig = {
         // Hidden on create-first-user page and for admins
         condition: (_data, _siblingData, { user }) => {
           // Show field only if the current user is an owner
-          return user?.role === "owner";
+          return Boolean(user && "role" in user && user.role === "owner");
         },
         description:
           "Owner: Full system access. Admin: Can create users and content. User: Read-only access. Admins will automatically create users with 'user' role.",
