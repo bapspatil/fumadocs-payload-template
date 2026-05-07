@@ -13,58 +13,58 @@
  * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
-  | 'Pacific/Midway'
-  | 'Pacific/Niue'
-  | 'Pacific/Honolulu'
-  | 'Pacific/Rarotonga'
-  | 'America/Anchorage'
-  | 'Pacific/Gambier'
-  | 'America/Los_Angeles'
-  | 'America/Tijuana'
-  | 'America/Denver'
-  | 'America/Phoenix'
-  | 'America/Chicago'
-  | 'America/Guatemala'
-  | 'America/New_York'
-  | 'America/Bogota'
-  | 'America/Caracas'
-  | 'America/Santiago'
-  | 'America/Buenos_Aires'
-  | 'America/Sao_Paulo'
-  | 'Atlantic/South_Georgia'
-  | 'Atlantic/Azores'
-  | 'Atlantic/Cape_Verde'
-  | 'Europe/London'
-  | 'Europe/Berlin'
-  | 'Africa/Lagos'
-  | 'Europe/Athens'
-  | 'Africa/Cairo'
-  | 'Europe/Moscow'
-  | 'Asia/Riyadh'
-  | 'Asia/Dubai'
-  | 'Asia/Baku'
-  | 'Asia/Karachi'
-  | 'Asia/Tashkent'
-  | 'Asia/Calcutta'
-  | 'Asia/Dhaka'
-  | 'Asia/Almaty'
-  | 'Asia/Jakarta'
-  | 'Asia/Bangkok'
-  | 'Asia/Shanghai'
-  | 'Asia/Singapore'
-  | 'Asia/Tokyo'
-  | 'Asia/Seoul'
-  | 'Australia/Brisbane'
-  | 'Australia/Sydney'
-  | 'Pacific/Guam'
-  | 'Pacific/Noumea'
-  | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+  | "Pacific/Midway"
+  | "Pacific/Niue"
+  | "Pacific/Honolulu"
+  | "Pacific/Rarotonga"
+  | "America/Anchorage"
+  | "Pacific/Gambier"
+  | "America/Los_Angeles"
+  | "America/Tijuana"
+  | "America/Denver"
+  | "America/Phoenix"
+  | "America/Chicago"
+  | "America/Guatemala"
+  | "America/New_York"
+  | "America/Bogota"
+  | "America/Caracas"
+  | "America/Santiago"
+  | "America/Buenos_Aires"
+  | "America/Sao_Paulo"
+  | "Atlantic/South_Georgia"
+  | "Atlantic/Azores"
+  | "Atlantic/Cape_Verde"
+  | "Europe/London"
+  | "Europe/Berlin"
+  | "Africa/Lagos"
+  | "Europe/Athens"
+  | "Africa/Cairo"
+  | "Europe/Moscow"
+  | "Asia/Riyadh"
+  | "Asia/Dubai"
+  | "Asia/Baku"
+  | "Asia/Karachi"
+  | "Asia/Tashkent"
+  | "Asia/Calcutta"
+  | "Asia/Dhaka"
+  | "Asia/Almaty"
+  | "Asia/Jakarta"
+  | "Asia/Bangkok"
+  | "Asia/Shanghai"
+  | "Asia/Singapore"
+  | "Asia/Tokyo"
+  | "Asia/Seoul"
+  | "Australia/Brisbane"
+  | "Australia/Sydney"
+  | "Pacific/Guam"
+  | "Pacific/Noumea"
+  | "Pacific/Auckland"
+  | "Pacific/Fiji";
 
 export interface Config {
   auth: {
     users: UserAuthOperations;
-    'payload-mcp-api-keys': PayloadMcpApiKeyAuthOperations;
+    "payload-mcp-api-keys": PayloadMcpApiKeyAuthOperations;
   };
   blocks: {};
   collections: {
@@ -74,13 +74,13 @@ export interface Config {
     docs: Doc;
     exports: Export;
     imports: Import;
-    'payload-mcp-api-keys': PayloadMcpApiKey;
+    "payload-mcp-api-keys": PayloadMcpApiKey;
     search: Search;
-    'payload-kv': PayloadKv;
-    'payload-jobs': PayloadJob;
-    'payload-locked-documents': PayloadLockedDocument;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
+    "payload-kv": PayloadKv;
+    "payload-jobs": PayloadJob;
+    "payload-locked-documents": PayloadLockedDocument;
+    "payload-preferences": PayloadPreference;
+    "payload-migrations": PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
@@ -90,13 +90,21 @@ export interface Config {
     docs: DocsSelect<false> | DocsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     imports: ImportsSelect<false> | ImportsSelect<true>;
-    'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
+    "payload-mcp-api-keys":
+      | PayloadMcpApiKeysSelect<false>
+      | PayloadMcpApiKeysSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
-    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+    "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
+    "payload-jobs": PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    "payload-locked-documents":
+      | PayloadLockedDocumentsSelect<false>
+      | PayloadLockedDocumentsSelect<true>;
+    "payload-preferences":
+      | PayloadPreferencesSelect<false>
+      | PayloadPreferencesSelect<true>;
+    "payload-migrations":
+      | PayloadMigrationsSelect<false>
+      | PayloadMigrationsSelect<true>;
   };
   db: {
     defaultIDType: string;
@@ -104,11 +112,6 @@ export interface Config {
   fallbackLocale: null;
   globals: {};
   globalsSelect: {};
-  locale: null;
-  widgets: {
-    collections: CollectionsWidget;
-  };
-  user: User | PayloadMcpApiKey;
   jobs: {
     tasks: {
       createCollectionExport: TaskCreateCollectionExport;
@@ -120,6 +123,11 @@ export interface Config {
       };
     };
     workflows: unknown;
+  };
+  locale: null;
+  user: User | PayloadMcpApiKey;
+  widgets: {
+    collections: CollectionsWidget;
   };
 }
 export interface UserAuthOperations {
@@ -163,21 +171,22 @@ export interface PayloadMcpApiKeyAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
+  collection: "users";
+  createdAt: string;
+  email: string;
+  hash?: string | null;
   id: string;
+  lockUntil?: string | null;
+  loginAttempts?: number | null;
   name: string;
+  password?: string | null;
+  resetPasswordExpiration?: string | null;
+  resetPasswordToken?: string | null;
   /**
    * Owner: Full system access. Admin: Can create users and content. User: Read-only access. Admins will automatically create users with 'user' role.
    */
-  role?: ('owner' | 'admin' | 'user') | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
+  role?: ("owner" | "admin" | "user") | null;
   salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
   sessions?:
     | {
         id: string;
@@ -185,42 +194,33 @@ export interface User {
         expiresAt: string;
       }[]
     | null;
-  password?: string | null;
-  collection: 'users';
+  updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
   alt: string;
-  updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
   filename?: string | null;
-  mimeType?: string | null;
   filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  height?: number | null;
+  id: string;
+  mimeType?: string | null;
+  thumbnailURL?: string | null;
+  updatedAt: string;
+  url?: string | null;
+  width?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
-  id: string;
-  /**
-   * The display title for this category/sidebar tab
-   */
-  title: string;
-  /**
-   * URL-friendly identifier
-   */
-  slug: string;
+  createdAt: string;
   /**
    * Brief description of this documentation category
    */
@@ -229,43 +229,31 @@ export interface Category {
    * Icon image for the category
    */
   icon?: (string | null) | Media;
+  id: string;
   /**
    * Order in which this category appears in the sidebar
    */
   order: number;
+  /**
+   * URL-friendly identifier
+   */
+  slug: string;
+  /**
+   * The display title for this category/sidebar tab
+   */
+  title: string;
   updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "docs".
  */
 export interface Doc {
-  id: string;
-  /**
-   * The page title
-   */
-  title: string;
-  /**
-   * URL-friendly identifier for this page
-   */
-  slug: string;
-  /**
-   * Brief description or excerpt for this page
-   */
-  description?: string | null;
+  _status?: ("draft" | "published") | null;
   /**
    * The sidebar tab/category this doc belongs to
    */
   category: string | Category;
-  /**
-   * Parent page for nested documentation structure
-   */
-  parent?: (string | null) | Doc;
-  /**
-   * Order within the category/parent
-   */
-  order: number;
   /**
    * The main content of the documentation page
    */
@@ -277,33 +265,63 @@ export interface Doc {
         version: number;
         [k: string]: unknown;
       }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      direction: ("ltr" | "rtl") | null;
+      format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
       indent: number;
       version: number;
     };
     [k: string]: unknown;
   };
-  updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
+  /**
+   * Brief description or excerpt for this page
+   */
+  description?: string | null;
+  id: string;
+  /**
+   * Order within the category/parent
+   */
+  order: number;
+  /**
+   * Parent page for nested documentation structure
+   */
+  parent?: (string | null) | Doc;
+  /**
+   * URL-friendly identifier for this page
+   */
+  slug: string;
+  /**
+   * The page title
+   */
+  title: string;
+  updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
-  id: string;
-  name?: string | null;
-  format: 'csv' | 'json';
-  limit?: number | null;
-  page?: number | null;
-  sort?: string | null;
-  sortOrder?: ('asc' | 'desc') | null;
-  drafts?: ('yes' | 'no') | null;
-  selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
-  fields?: string[] | null;
   collectionSlug: string;
+  createdAt: string;
+  drafts?: ("yes" | "no") | null;
+  fields?: string[] | null;
+  filename?: string | null;
+  filesize?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  format: "csv" | "json";
+  height?: number | null;
+  id: string;
+  limit?: number | null;
+  mimeType?: string | null;
+  name?: string | null;
+  page?: number | null;
+  selectionToUse?: ("currentSelection" | "currentFilters" | "all") | null;
+  sort?: string | null;
+  sortOrder?: ("asc" | "desc") | null;
+  thumbnailURL?: string | null;
+  updatedAt: string;
+  url?: string | null;
   where?:
     | {
         [k: string]: unknown;
@@ -313,28 +331,25 @@ export interface Export {
     | number
     | boolean
     | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
   width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "imports".
  */
 export interface Import {
-  id: string;
   collectionSlug: string;
-  importMode?: ('create' | 'update' | 'upsert') | null;
+  createdAt: string;
+  filename?: string | null;
+  filesize?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  height?: number | null;
+  id: string;
+  importMode?: ("create" | "update" | "upsert") | null;
   matchField?: string | null;
-  status?: ('pending' | 'completed' | 'partial' | 'failed') | null;
+  mimeType?: string | null;
+  status?: ("pending" | "completed" | "partial" | "failed") | null;
   summary?: {
     imported?: number | null;
     updated?: number | null;
@@ -350,17 +365,10 @@ export interface Import {
       | boolean
       | null;
   };
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
   thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
+  updatedAt: string;
+  url?: string | null;
   width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * API keys control which collections, resources, tools, and prompts MCP clients can access
@@ -369,15 +377,10 @@ export interface Import {
  * via the `definition` "payload-mcp-api-keys".
  */
 export interface PayloadMcpApiKey {
-  id: string;
-  /**
-   * The user that the API key is associated with.
-   */
-  user: string | User;
-  /**
-   * A useful label for the API key.
-   */
-  label?: string | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  collection: "payload-mcp-api-keys";
+  createdAt: string;
   /**
    * The purpose of the API key.
    */
@@ -400,12 +403,17 @@ export interface PayloadMcpApiKey {
      */
     delete?: boolean | null;
   };
-  updatedAt: string;
-  createdAt: string;
   enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
-  collection: 'payload-mcp-api-keys';
+  id: string;
+  /**
+   * A useful label for the API key.
+   */
+  label?: string | null;
+  updatedAt: string;
+  /**
+   * The user that the API key is associated with.
+   */
+  user: string | User;
 }
 /**
  * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
@@ -414,24 +422,22 @@ export interface PayloadMcpApiKey {
  * via the `definition` "search".
  */
 export interface Search {
-  id: string;
-  title?: string | null;
-  priority?: number | null;
+  createdAt: string;
+  description?: string | null;
   doc: {
-    relationTo: 'docs';
+    relationTo: "docs";
     value: string | Doc;
   };
-  description?: string | null;
+  id: string;
+  priority?: number | null;
+  title?: string | null;
   updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
-  key: string;
   data:
     | {
         [k: string]: unknown;
@@ -441,44 +447,37 @@ export interface PayloadKv {
     | number
     | boolean
     | null;
+  id: string;
+  key: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
+  completedAt?: string | null;
+  createdAt: string;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
   id: string;
   /**
    * Input data provided to the job
    */
   input?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  taskStatus?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  completedAt?: string | null;
-  totalTried?: number | null;
-  /**
-   * If hasError is true this job will not be retried
-   */
-  hasError?: boolean | null;
-  /**
-   * If hasError is true, this is the error that caused it
-   */
-  error?:
     | {
         [k: string]: unknown;
       }
@@ -494,7 +493,11 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish';
+        taskSlug:
+          | "inline"
+          | "createCollectionExport"
+          | "createCollectionImport"
+          | "schedulePublish";
         taskID: string;
         input?:
           | {
@@ -514,7 +517,7 @@ export interface PayloadJob {
           | number
           | boolean
           | null;
-        state: 'failed' | 'succeeded';
+        state: "failed" | "succeeded";
         error?:
           | {
               [k: string]: unknown;
@@ -527,73 +530,91 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish') | null;
-  queue?: string | null;
-  waitUntil?: string | null;
   processing?: boolean | null;
+  queue?: string | null;
+  taskSlug?:
+    | (
+        | "inline"
+        | "createCollectionExport"
+        | "createCollectionImport"
+        | "schedulePublish"
+      )
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  totalTried?: number | null;
   updatedAt: string;
-  createdAt: string;
+  waitUntil?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  createdAt: string;
   document?:
     | ({
-        relationTo: 'users';
+        relationTo: "users";
         value: string | User;
       } | null)
     | ({
-        relationTo: 'media';
+        relationTo: "media";
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'categories';
+        relationTo: "categories";
         value: string | Category;
       } | null)
     | ({
-        relationTo: 'docs';
+        relationTo: "docs";
         value: string | Doc;
       } | null)
     | ({
-        relationTo: 'payload-mcp-api-keys';
+        relationTo: "payload-mcp-api-keys";
         value: string | PayloadMcpApiKey;
       } | null)
     | ({
-        relationTo: 'search';
+        relationTo: "search";
         value: string | Search;
       } | null);
   globalSlug?: string | null;
+  id: string;
+  updatedAt: string;
   user:
     | {
-        relationTo: 'users';
+        relationTo: "users";
         value: string | User;
       }
     | {
-        relationTo: 'payload-mcp-api-keys';
+        relationTo: "payload-mcp-api-keys";
         value: string | PayloadMcpApiKey;
       };
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
+  createdAt: string;
   id: string;
+  key?: string | null;
+  updatedAt: string;
   user:
     | {
-        relationTo: 'users';
+        relationTo: "users";
         value: string | User;
       }
     | {
-        relationTo: 'payload-mcp-api-keys';
+        relationTo: "payload-mcp-api-keys";
         value: string | PayloadMcpApiKey;
       };
-  key?: string | null;
   value?:
     | {
         [k: string]: unknown;
@@ -603,36 +624,33 @@ export interface PayloadPreference {
     | number
     | boolean
     | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
+  batch?: number | null;
+  createdAt: string;
   id: string;
   name?: string | null;
-  batch?: number | null;
   updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
-  updatedAt?: T;
   createdAt?: T;
   email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
   hash?: T;
-  loginAttempts?: T;
   lockUntil?: T;
+  loginAttempts?: T;
+  name?: T;
+  resetPasswordExpiration?: T;
+  resetPasswordToken?: T;
+  role?: T;
+  salt?: T;
   sessions?:
     | T
     | {
@@ -640,6 +658,7 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+  updatedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -647,74 +666,74 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
   filename?: T;
-  mimeType?: T;
   filesize?: T;
-  width?: T;
-  height?: T;
   focalX?: T;
   focalY?: T;
+  height?: T;
+  mimeType?: T;
+  thumbnailURL?: T;
+  updatedAt?: T;
+  url?: T;
+  width?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
+  createdAt?: T;
   description?: T;
   icon?: T;
   order?: T;
+  slug?: T;
+  title?: T;
   updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "docs_select".
  */
 export interface DocsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  description?: T;
-  category?: T;
-  parent?: T;
-  order?: T;
-  content?: T;
-  updatedAt?: T;
-  createdAt?: T;
   _status?: T;
+  category?: T;
+  content?: T;
+  createdAt?: T;
+  description?: T;
+  order?: T;
+  parent?: T;
+  slug?: T;
+  title?: T;
+  updatedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports_select".
  */
 export interface ExportsSelect<T extends boolean = true> {
-  name?: T;
-  format?: T;
-  limit?: T;
-  page?: T;
-  sort?: T;
-  sortOrder?: T;
-  drafts?: T;
-  selectionToUse?: T;
-  fields?: T;
   collectionSlug?: T;
-  where?: T;
-  updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
+  drafts?: T;
+  fields?: T;
   filename?: T;
-  mimeType?: T;
   filesize?: T;
-  width?: T;
-  height?: T;
   focalX?: T;
   focalY?: T;
+  format?: T;
+  height?: T;
+  limit?: T;
+  mimeType?: T;
+  name?: T;
+  page?: T;
+  selectionToUse?: T;
+  sort?: T;
+  sortOrder?: T;
+  thumbnailURL?: T;
+  updatedAt?: T;
+  url?: T;
+  where?: T;
+  width?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -722,8 +741,15 @@ export interface ExportsSelect<T extends boolean = true> {
  */
 export interface ImportsSelect<T extends boolean = true> {
   collectionSlug?: T;
+  createdAt?: T;
+  filename?: T;
+  filesize?: T;
+  focalX?: T;
+  focalY?: T;
+  height?: T;
   importMode?: T;
   matchField?: T;
+  mimeType?: T;
   status?: T;
   summary?:
     | T
@@ -734,25 +760,19 @@ export interface ImportsSelect<T extends boolean = true> {
         issues?: T;
         issueDetails?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
   thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
+  updatedAt?: T;
+  url?: T;
   width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-mcp-api-keys_select".
  */
 export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
-  user?: T;
-  label?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
+  createdAt?: T;
   description?: T;
   docs?:
     | T
@@ -762,43 +782,41 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         update?: T;
         delete?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
   enableAPIKey?: T;
-  apiKey?: T;
-  apiKeyIndex?: T;
+  label?: T;
+  updatedAt?: T;
+  user?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "search_select".
  */
 export interface SearchSelect<T extends boolean = true> {
-  title?: T;
-  priority?: T;
-  doc?: T;
-  description?: T;
-  updatedAt?: T;
   createdAt?: T;
+  description?: T;
+  doc?: T;
+  priority?: T;
+  title?: T;
+  updatedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T;
   data?: T;
+  key?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs_select".
  */
 export interface PayloadJobsSelect<T extends boolean = true> {
-  input?: T;
-  taskStatus?: T;
   completedAt?: T;
-  totalTried?: T;
-  hasError?: T;
+  createdAt?: T;
   error?: T;
+  hasError?: T;
+  input?: T;
   log?:
     | T
     | {
@@ -812,44 +830,45 @@ export interface PayloadJobsSelect<T extends boolean = true> {
         error?: T;
         id?: T;
       };
-  taskSlug?: T;
-  queue?: T;
-  waitUntil?: T;
   processing?: T;
+  queue?: T;
+  taskSlug?: T;
+  taskStatus?: T;
+  totalTried?: T;
   updatedAt?: T;
-  createdAt?: T;
+  waitUntil?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
+  createdAt?: T;
   document?: T;
   globalSlug?: T;
-  user?: T;
   updatedAt?: T;
-  createdAt?: T;
+  user?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T;
-  key?: T;
-  value?: T;
-  updatedAt?: T;
   createdAt?: T;
+  key?: T;
+  updatedAt?: T;
+  user?: T;
+  value?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T;
   batch?: T;
-  updatedAt?: T;
   createdAt?: T;
+  name?: T;
+  updatedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -859,7 +878,7 @@ export interface CollectionsWidget {
   data?: {
     [k: string]: unknown;
   };
-  width: 'full';
+  width: "full";
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -870,11 +889,17 @@ export interface TaskCreateCollectionExport {
     id: string;
     name: string;
     batchSize?: number | null;
-    collectionSlug: 'users' | 'media' | 'categories' | 'docs' | 'exports' | 'imports';
-    drafts?: ('yes' | 'no') | null;
+    collectionSlug:
+      | "users"
+      | "media"
+      | "categories"
+      | "docs"
+      | "exports"
+      | "imports";
+    drafts?: ("yes" | "no") | null;
     exportCollection: string;
     fields?: string[] | null;
-    format: 'csv' | 'json';
+    format: "csv" | "json";
     limit?: number | null;
     locale?: string | null;
     maxLimit?: number | null;
@@ -906,7 +931,7 @@ export interface TaskCreateCollectionImport {
     userCollection?: string | null;
     batchSize?: number | null;
     debug?: boolean | null;
-    defaultVersionStatus?: ('draft' | 'published') | null;
+    defaultVersionStatus?: ("draft" | "published") | null;
     maxLimit?: number | null;
   };
   output?: unknown;
@@ -917,10 +942,10 @@ export interface TaskCreateCollectionImport {
  */
 export interface TaskSchedulePublish {
   input: {
-    type?: ('publish' | 'unpublish') | null;
+    type?: ("publish" | "unpublish") | null;
     locale?: string | null;
     doc?: {
-      relationTo: 'docs';
+      relationTo: "docs";
       value: string | Doc;
     } | null;
     global?: string | null;
@@ -936,7 +961,6 @@ export interface Auth {
   [k: string]: unknown;
 }
 
-
-declare module 'payload' {
+declare module "payload" {
   export interface GeneratedTypes extends Config {}
 }

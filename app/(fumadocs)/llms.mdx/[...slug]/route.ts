@@ -14,7 +14,9 @@ function extractTextFromLexical(content: any): string {
   }
 
   function extractFromNode(node: any): string {
-    if (!node) return "";
+    if (!node) {
+      return "";
+    }
 
     // Handle root node
     if (node.type === "root") {
@@ -83,7 +85,9 @@ function extractTextFromLexical(content: any): string {
   }
 
   function extractTextContent(node: any): string {
-    if (!node) return "";
+    if (!node) {
+      return "";
+    }
 
     if (node.type === "text") {
       return node.text || "";
@@ -129,7 +133,9 @@ export async function GET(
   });
 
   const category = categories[0];
-  if (!category) notFound();
+  if (!category) {
+    notFound();
+  }
 
   // Fetch all docs in the category and resolve by computed full path
   const { docs: catDocs } = await payload.find({
@@ -145,7 +151,9 @@ export async function GET(
   });
 
   const byId = new Map<string, any>();
-  for (const d of catDocs) byId.set(String(d.id), d);
+  for (const d of catDocs) {
+    byId.set(String(d.id), d);
+  }
   const buildPath = (doc: any) => {
     const segs: string[] = [];
     let current: any = doc;
@@ -166,7 +174,9 @@ export async function GET(
   };
 
   const doc = catDocs.find((d) => buildPath(d) === docPath);
-  if (!doc) notFound();
+  if (!doc) {
+    notFound();
+  }
 
   const url = docPath
     ? `/docs/${categorySlug}/${docPath}`
@@ -214,7 +224,9 @@ export async function generateStaticParams() {
     });
 
     const byId = new Map<string, any>();
-    for (const d of catDocs) byId.set(String(d.id), d);
+    for (const d of catDocs) {
+      byId.set(String(d.id), d);
+    }
     const buildPath = (doc: any) => {
       const segs: string[] = [];
       let current: any = doc;

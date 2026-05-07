@@ -13,9 +13,9 @@ import type { Payload } from "payload";
 import type { Category, Doc, Media } from "@/payload-types";
 
 export interface TableOfContentsItem {
+  depth: number;
   title: string;
   url: string;
-  depth: number;
 }
 
 /**
@@ -79,7 +79,9 @@ export function extractTableOfContents(content: any): TableOfContentsItem[] {
   const usedSlugs = new Map<string, number>();
 
   function extractHeadings(node: any): void {
-    if (!node) return;
+    if (!node) {
+      return;
+    }
 
     if (node.type === "heading") {
       const tag = node.tag || "h2";

@@ -3,8 +3,8 @@
 
 import { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import type { VideoJsPlayer } from "video.js";
 import videojs from "video.js";
+import type Player from "video.js/dist/types/player";
 
 interface VideoJSPlayerProps {
   html: string;
@@ -12,7 +12,7 @@ interface VideoJSPlayerProps {
 
 export default function VideoJSPlayer({ html }: VideoJSPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const playersRef = useRef<VideoJsPlayer[]>([]);
+  const playersRef = useRef<Player[]>([]);
 
   useEffect(() => {
     const container = containerRef.current;

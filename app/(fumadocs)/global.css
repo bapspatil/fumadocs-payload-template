@@ -208,8 +208,8 @@ body {
 
 /* Video.js custom styling */
 .video-js {
-  @apply w-full rounded-md;
   position: relative !important;
+  @apply w-full rounded-md;
 }
 
 /* Center the big play button */
@@ -217,8 +217,8 @@ body {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
-  transform: translate(-50%, -50%) !important;
   margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 /* Ensure video container is properly positioned */

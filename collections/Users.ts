@@ -9,25 +9,35 @@ export const Users: CollectionConfig = {
   access: {
     // Only owner and admins can access the admin panel
     admin: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
+      if (!(user && "role" in user)) {
+        return false;
+      }
       return user.role === "owner" || user.role === "admin";
     },
     // All authenticated users can read user data
-    read: ({ req: { user } }) => {
-      return Boolean(user);
-    },
+    read: ({ req: { user } }) => Boolean(user),
     // Owner can create any user, admins can only create normal users
     create: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
-      if (user.role === "owner") return true;
-      if (user.role === "admin") return true;
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      if (user.role === "owner") {
+        return true;
+      }
+      if (user.role === "admin") {
+        return true;
+      }
       return false;
     },
     // Owner can update any user, admins can update normal users, users can update themselves
     update: ({ req: { user }, id }) => {
-      if (!(user && "role" in user)) return false;
+      if (!(user && "role" in user)) {
+        return false;
+      }
       // Owner can update anyone
-      if (user.role === "owner") return true;
+      if (user.role === "owner") {
+        return true;
+      }
       // Admins can update users, but not other admins or owners (enforced by query constraint)
       if (user.role === "admin") {
         return {
@@ -41,9 +51,13 @@ export const Users: CollectionConfig = {
     },
     // Owner can delete any user except themselves, admins cannot delete
     delete: ({ req: { user }, id }) => {
-      if (!(user && "role" in user)) return false;
+      if (!(user && "role" in user)) {
+        return false;
+      }
       // Owner can delete anyone except themselves
-      if (user.role === "owner") return user.id !== id;
+      if (user.role === "owner") {
+        return user.id !== id;
+      }
       return false;
     },
   },
@@ -1017,12 +1031,10 @@ export const Users: CollectionConfig = {
       ],
       access: {
         // Only owner can modify roles
-        create: ({ req: { user } }) => {
-          return Boolean(user && "role" in user && user.role === "owner");
-        },
-        update: ({ req: { user } }) => {
-          return Boolean(user && "role" in user && user.role === "owner");
-        },
+        create: ({ req: { user } }) =>
+          Boolean(user && "role" in user && user.role === "owner"),
+        update: ({ req: { user } }) =>
+          Boolean(user && "role" in user && user.role === "owner"),
         // Everyone can read roles
         read: () => true,
       },

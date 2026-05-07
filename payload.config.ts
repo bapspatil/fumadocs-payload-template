@@ -92,6 +92,12 @@ export default buildConfig({
           description: "View and manage your documentation.",
         },
       },
+      mcp: {
+        serverOptions: {
+          instructions:
+            "This server exposes documentation managed in Payload CMS. Use the `docs` collection to look up published documentation pages; each doc belongs to a `categories` entry that groups it into a sidebar tab. Prefer searching by title, description, or slug, and respect the `_status` field (only `published` docs are user-visible).",
+        },
+      },
     }),
     searchPlugin({
       collections: ["docs"],
