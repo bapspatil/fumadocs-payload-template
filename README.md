@@ -45,6 +45,7 @@ fumadocs-payload-template/
 │   └── ui/                         # UI components
 ├── lib/
 │   ├── source.ts                   # Fumadocs dynamic source adapter
+│   ├── theme-script.ts             # Blocking theme init (React 19 / next-themes)
 │   ├── lexical-serializer.ts       # Lexical to HTML converter
 │   ├── lexical-to-markdown.ts      # Lexical to Markdown converter
 │   └── utils.ts                    # Helper functions
@@ -458,6 +459,17 @@ If using S3:
 If local:
 1. Files are in `/public/media`
 2. Leave `S3_BUCKET` empty or set `S3_ENABLED=false`
+
+### "Encountered a script tag while rendering React component"
+
+React 19 does not execute `<script>` tags rendered from Client Components. Fumadocs `RootProvider` uses `next-themes`, which used to inject its FOUC script that way.
+
+This template:
+
+1. Injects a blocking theme script from the **server** layout (`lib/theme-script.ts`)
+2. Patches `next-themes@0.4.6` so `ThemeScript` returns `null` (see `patches/next-themes@0.4.6.patch`)
+
+Keep `next-themes` pinned to `0.4.6` so the patch continues to apply. After `next-themes` ships a React 19-safe release, the patch and layout script can be removed.
 
 ### Sidebar order is wrong
 

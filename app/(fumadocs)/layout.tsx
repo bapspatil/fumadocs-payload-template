@@ -3,6 +3,7 @@ import "video.js/dist/video-js.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { themeInitScript } from "@/lib/theme-script";
 
 export const metadata: Metadata = {
   authors: [{ name: "Bapusaheb Patil" }],
@@ -32,7 +33,11 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={"flex min-h-screen flex-col"}>
+      <head>
+        {/* Blocking FOUC script: next-themes cannot emit this from a Client Component on React 19. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="flex min-h-screen flex-col">
         <RootProvider>{children}</RootProvider>
       </body>
     </html>
