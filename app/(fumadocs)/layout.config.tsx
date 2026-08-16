@@ -9,10 +9,20 @@ import { Home, Settings } from "lucide-react";
  * Docs Layout: app/docs/layout.tsx
  */
 export const baseOptions: BaseLayoutProps = {
-  themeSwitch: {
-    enabled: true,
-    mode: "light-dark-system",
-  },
+  links: [
+    {
+      active: "url",
+      icon: <Home />,
+      text: "Home",
+      url: "/",
+    },
+    {
+      active: "url",
+      icon: <Settings />,
+      text: "Admin",
+      url: "/admin",
+    },
+  ],
   nav: {
     title: (
       <div className="flex items-center gap-2">
@@ -20,29 +30,19 @@ export const baseOptions: BaseLayoutProps = {
       </div>
     ),
   },
-  links: [
-    {
-      text: "Home",
-      url: "/",
-      active: "url",
-      icon: <Home />,
-    },
-    {
-      text: "Admin",
-      url: "/admin",
-      active: "url",
-      icon: <Settings />,
-    },
-  ],
+  themeSwitch: {
+    enabled: true,
+    mode: "light-dark-system",
+  },
 };
 
 export const homeOptions: BaseLayoutProps = {
   ...baseOptions,
   links: [
     {
+      active: "url",
       text: "Admin",
       url: "/admin",
-      active: "url",
     },
   ],
 };

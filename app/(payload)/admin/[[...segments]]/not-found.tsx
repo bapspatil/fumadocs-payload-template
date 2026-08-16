@@ -22,6 +22,6 @@ export const generateMetadata = ({
   generatePageMetadata({ config, params, searchParams });
 
 const NotFound = ({ params, searchParams }: Args) =>
-  NotFoundPage({ config, params, searchParams, importMap });
+  NotFoundPage({ config, importMap, params, searchParams });
 
 export default NotFound;

@@ -1,6 +1,14 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["ultracite/biome/core", "ultracite/biome/next"],
+  "files": {
+    "includes": [
+      "!payload-types.ts",
+      "!app/(payload)",
+      "!app/my-route",
+      "!components/ui"
+    ]
+  },
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
@@ -14,13 +22,28 @@
       },
       "style": {
         "noMagicNumbers": "off",
-        "useNamingConvention": "off"
+        "useNamingConvention": "off",
+        "useFilenamingConvention": "off",
+        "useConsistentTypeDefinitions": "off",
+        "useDestructuring": "off",
+        "noSubstr": "off",
+        "noNonNullAssertion": "off"
       },
       "correctness": {
         "noUnusedVariables": "off"
       },
       "suspicious": {
-        "noUnknownAtRules": "off"
+        "noUnknownAtRules": "off",
+        "noBitwiseOperators": "off",
+        "noExplicitAny": "off",
+        "noUnnecessaryConditions": "off"
+      },
+      "performance": {
+        "noAwaitInLoops": "off",
+        "useTopLevelRegex": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   }

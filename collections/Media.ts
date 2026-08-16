@@ -1,34 +1,58 @@
 import type { CollectionConfig } from "payload";
 
 export const Media: CollectionConfig = {
-  slug: "media",
   access: {
-    // Public read access for media files
-    read: () => true,
     // Owner and admins can upload media
     create: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
-      return user.role === "owner" || user.role === "admin";
-    },
-    // Owner and admins can update media
-    update: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
+      if (!(user && "role" in user)) {
+        return false;
+      }
       return user.role === "owner" || user.role === "admin";
     },
     // Owner can always delete; admins can soft-delete (trash) but not permanently delete
     delete: ({ req: { user }, data }) => {
-      if (!(user && "role" in user)) return false;
-      if (user.role === "owner") return true;
-      if (user.role === "admin") return Boolean(data?.deletedAt);
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      if (user.role === "owner") {
+        return true;
+      }
+      if (user.role === "admin") {
+        return Boolean(data?.deletedAt);
+      }
       return false;
+    },
+    // Public read access for media files
+    read: () => true,
+    // Owner and admins can update media
+    update: ({ req: { user } }) => {
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      return user.role === "owner" || user.role === "admin";
     },
   },
   fields: [
     {
       name: "alt",
-      type: "text",
       required: true,
+      type: "text",
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        const { revalidateDocs } = await import("@/lib/revalidate-docs");
+        await revalidateDocs();
+      },
+    ],
+    afterDelete: [
+      async () => {
+        const { revalidateDocs } = await import("@/lib/revalidate-docs");
+        await revalidateDocs();
+      },
+    ],
+  },
+  slug: "media",
   upload: true,
 };

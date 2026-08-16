@@ -2,85 +2,85 @@
 
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
+import { getDocPreviewUrl } from "@/lib/preview-url";
 import { validateSlug } from "@/lib/utils";
 
 export const Docs: CollectionConfig = {
-  slug: "docs",
-  admin: {
-    useAsTitle: "title",
-    defaultColumns: ["title", "category", "slug", "order", "parent"],
-  },
   access: {
-    // Public read access for documentation
-    read: () => true,
     // Owner and admins can create docs
     create: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
-      return user.role === "owner" || user.role === "admin";
-    },
-    // Owner and admins can update docs
-    update: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
+      if (!(user && "role" in user)) {
+        return false;
+      }
       return user.role === "owner" || user.role === "admin";
     },
     // Owner can always delete; admins can soft-delete (trash) but not permanently delete
     delete: ({ req: { user }, data }) => {
-      if (!(user && "role" in user)) return false;
-      if (user.role === "owner") return true;
-      if (user.role === "admin") return Boolean(data?.deletedAt);
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      if (user.role === "owner") {
+        return true;
+      }
+      if (user.role === "admin") {
+        return Boolean(data?.deletedAt);
+      }
       return false;
     },
-  },
-  versions: {
-    maxPerDoc: 10,
-    drafts: {
-      autosave: {
-        interval: 120_000, // 2 minutes
-        showSaveDraftButton: true,
-      },
-      schedulePublish: true,
-      validate: false,
+    // Public read access for documentation
+    read: () => true,
+    // Owner and admins can update docs
+    update: ({ req: { user } }) => {
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      return user.role === "owner" || user.role === "admin";
     },
   },
+  admin: {
+    defaultColumns: ["title", "category", "slug", "order", "parent"],
+    livePreview: {
+      url: ({ data }) => getDocPreviewUrl(data),
+    },
+    useAsTitle: "title",
+  },
+  enableQueryPresets: true,
   fields: [
     {
-      name: "title",
-      type: "text",
-      required: true,
       admin: {
         description: "The page title",
       },
+      name: "title",
+      required: true,
+      type: "text",
     },
     {
-      name: "slug",
-      type: "text",
-      required: true,
-      validate: validateSlug,
       admin: {
         description: "URL-friendly identifier for this page",
       },
+      name: "slug",
+      required: true,
+      type: "text",
+      validate: validateSlug,
     },
     {
-      name: "description",
-      type: "textarea",
       admin: {
         description: "Brief description or excerpt for this page",
       },
+      name: "description",
+      type: "textarea",
     },
     {
-      name: "category",
-      type: "relationship",
-      relationTo: "categories" as any,
-      required: true,
       admin: {
         description: "The sidebar tab/category this doc belongs to",
         position: "sidebar",
       },
+      name: "category",
+      relationTo: "categories" as any,
+      required: true,
+      type: "relationship",
     },
     {
-      name: "parent",
-      type: "relationship",
-      relationTo: "docs" as any,
       admin: {
         description: "Parent page for nested documentation structure",
         position: "sidebar",
@@ -90,25 +90,54 @@ export const Docs: CollectionConfig = {
           not_equals: id,
         },
       }),
+      name: "parent",
+      relationTo: "docs" as any,
+      type: "relationship",
     },
     {
-      name: "order",
-      type: "number",
-      required: true,
-      defaultValue: 0,
       admin: {
         description: "Order within the category/parent",
         position: "sidebar",
       },
+      defaultValue: 0,
+      name: "order",
+      required: true,
+      type: "number",
     },
     {
-      name: "content",
-      type: "richText",
-      required: true,
-      editor: lexicalEditor({}),
       admin: {
         description: "The main content of the documentation page",
       },
+      editor: lexicalEditor({}),
+      name: "content",
+      required: true,
+      type: "richText",
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        const { revalidateDocs } = await import("@/lib/revalidate-docs");
+        await revalidateDocs();
+      },
+    ],
+    afterDelete: [
+      async () => {
+        const { revalidateDocs } = await import("@/lib/revalidate-docs");
+        await revalidateDocs();
+      },
+    ],
+  },
+  slug: "docs",
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 120_000, // 2 minutes
+        showSaveDraftButton: true,
+      },
+      schedulePublish: true,
+      validate: false,
+    },
+    maxPerDoc: 10,
+  },
 };

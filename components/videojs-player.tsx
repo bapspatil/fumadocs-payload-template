@@ -3,8 +3,9 @@
 
 import { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import type { VideoJsPlayer } from "video.js";
 import videojs from "video.js";
+
+type VideoJsPlayer = ReturnType<typeof videojs>;
 
 interface VideoJSPlayerProps {
   html: string;
@@ -49,13 +50,13 @@ export default function VideoJSPlayer({ html }: VideoJSPlayerProps) {
           node.style.backgroundColor = "transparent";
 
           const player = videojs(node, {
-            controls: true,
-            preload: "auto",
-            responsive: true,
-            fluid: true,
             controlBar: {
               playToggle: true,
             },
+            controls: true,
+            fluid: true,
+            preload: "auto",
+            responsive: true,
             sources: [
               {
                 src,
@@ -97,7 +98,7 @@ export default function VideoJSPlayer({ html }: VideoJSPlayerProps) {
 
           playersRef.current.push(player);
           node.dataset.videojsHydrated = "true";
-        } catch (error) {
+        } catch {
           // Mark as hydrated even on failure to prevent retry loops
           node.dataset.videojsHydrated = "true";
         }
