@@ -5,19 +5,27 @@ const withMdx = createMDX();
 
 /** @type {import('next').NextConfig} */
 const config = {
-  reactStrictMode: true,
-  serverExternalPackages: ["sharp"],
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
   images: {
     remotePatterns: [
       {
-        protocol: "https",
         hostname: process.env.S3_ENDPOINT?.replace(/^https?:\/\//, "") || "",
+        protocol: "https",
       },
     ],
   },
+  reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        destination: "/llms.mdx/docs/:path*",
+        source: "/docs/:path*.md",
+      },
+    ];
+  },
+  serverExternalPackages: ["sharp"],
 };
 
 export default withPayload(withMdx(config));

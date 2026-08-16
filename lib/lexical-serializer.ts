@@ -13,9 +13,9 @@ import type { Payload } from "payload";
 import type { Category, Doc, Media } from "@/payload-types";
 
 export interface TableOfContentsItem {
+  depth: number;
   title: string;
   url: string;
-  depth: number;
 }
 
 /**
@@ -79,11 +79,13 @@ export function extractTableOfContents(content: any): TableOfContentsItem[] {
   const usedSlugs = new Map<string, number>();
 
   function extractHeadings(node: any): void {
-    if (!node) return;
+    if (!node) {
+      return;
+    }
 
     if (node.type === "heading") {
       const tag = node.tag || "h2";
-      const depth = Number.parseInt(tag.substring(1));
+      const depth = Number.parseInt(tag.substring(1), 10);
 
       // Extract text content from children
       const text = extractTextFromNode(node);
@@ -101,9 +103,9 @@ export function extractTableOfContents(content: any): TableOfContentsItem[] {
         }
 
         toc.push({
+          depth,
           title: text,
           url: `#${slug}`,
-          depth,
         });
       }
     }
@@ -203,6 +205,58 @@ function createConverterOverrides(
       const className = headingClasses[node.tag] ?? "";
       return `<${node.tag}${providedStyleTag} id="${slug}" class="${className}">${children.join("")}</${node.tag}>`;
     },
+    link: async (args) => {
+      const { node } = args;
+      const url = typeof node.fields?.url === "string" ? node.fields.url : "";
+
+      // Check if the URL is a Vimeo link
+      const vimeoId = extractVimeoId(url);
+      if (vimeoId) {
+        // Parse video ID and hash (if present)
+        const [videoId, hash] = vimeoId.split("/");
+        const embedUrl = hash
+          ? `https://player.vimeo.com/video/${videoId}?h=${hash}`
+          : `https://player.vimeo.com/video/${videoId}`;
+
+        // Create a special marker for Vimeo embeds
+        return `<div class="vimeo-embed-container" data-vimeo-id="${escapeHtml(videoId)}" data-vimeo-hash="${hash ? escapeHtml(hash) : ""}" data-vimeo-embed-url="${escapeHtml(embedUrl)}"></div>`;
+      }
+
+      // Default link rendering
+      const linkConverter = defaultConverters.link;
+      if (typeof linkConverter === "function") {
+        return await linkConverter(args);
+      }
+      return linkConverter ?? "";
+    },
+    relationship: async (args) => {
+      const node = args.node as SerializedRelationshipNode;
+      const relatedDoc = await resolveRelationshipDoc({
+        categoryCache,
+        docCache,
+        node,
+        payload,
+      });
+      if (!relatedDoc) {
+        return "";
+      }
+
+      const title = relatedDoc.title ?? "Related document";
+      const description = relatedDoc.description ?? "";
+      const href = await resolveDocHref({
+        categoryCache,
+        doc: relatedDoc,
+        docCache,
+        payload,
+      });
+      const body = `<article class="lexical-relationship-card !mt-2 rounded-lg border border-border bg-card p-2 shadow-sm">
+  <p class="text-sm font-semibold text-primary">${escapeHtml(title)}</p>
+  ${description ? `<p class="text-sm text-muted-foreground">${escapeHtml(description)}</p>` : ""}
+</article>`;
+      return href
+        ? `<a href="${href}" class="block no-underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">${body}</a>`
+        : body;
+    },
     upload: async (args) => {
       const node = args.node as SerializedUploadNode;
       const doc =
@@ -218,12 +272,12 @@ function createConverterOverrides(
         typeof media === "object" &&
         media.mimeType?.startsWith("video")
       ) {
-        const titleValue =
-          typeof media.alt === "string" && media.alt
-            ? media.alt
-            : typeof media.filename === "string"
-              ? media.filename
-              : "";
+        let titleValue = "";
+        if (typeof media.alt === "string" && media.alt) {
+          titleValue = media.alt;
+        } else if (typeof media.filename === "string") {
+          titleValue = media.filename;
+        }
         const urlValue = typeof media.url === "string" ? media.url : "";
         if (!urlValue) {
           return "";
@@ -269,58 +323,6 @@ function createConverterOverrides(
         return uploadConverter(args);
       }
       return uploadConverter ?? "";
-    },
-    relationship: async (args) => {
-      const node = args.node as SerializedRelationshipNode;
-      const relatedDoc = await resolveRelationshipDoc({
-        node,
-        categoryCache,
-        docCache,
-        payload,
-      });
-      if (!relatedDoc) {
-        return "";
-      }
-
-      const title = relatedDoc.title ?? "Related document";
-      const description = relatedDoc.description ?? "";
-      const href = await resolveDocHref({
-        doc: relatedDoc,
-        docCache,
-        categoryCache,
-        payload,
-      });
-      const body = `<article class="lexical-relationship-card !mt-2 rounded-lg border border-border bg-card p-2 shadow-sm">
-  <p class="text-sm font-semibold text-primary">${escapeHtml(title)}</p>
-  ${description ? `<p class="text-sm text-muted-foreground">${escapeHtml(description)}</p>` : ""}
-</article>`;
-      return href
-        ? `<a href="${href}" class="block no-underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">${body}</a>`
-        : body;
-    },
-    link: async (args) => {
-      const { node } = args;
-      const url = typeof node.fields?.url === "string" ? node.fields.url : "";
-
-      // Check if the URL is a Vimeo link
-      const vimeoId = extractVimeoId(url);
-      if (vimeoId) {
-        // Parse video ID and hash (if present)
-        const [videoId, hash] = vimeoId.split("/");
-        const embedUrl = hash
-          ? `https://player.vimeo.com/video/${videoId}?h=${hash}`
-          : `https://player.vimeo.com/video/${videoId}`;
-
-        // Create a special marker for Vimeo embeds
-        return `<div class="vimeo-embed-container" data-vimeo-id="${escapeHtml(videoId)}" data-vimeo-hash="${hash ? escapeHtml(hash) : ""}" data-vimeo-embed-url="${escapeHtml(embedUrl)}"></div>`;
-      }
-
-      // Default link rendering
-      const linkConverter = defaultConverters.link;
-      if (typeof linkConverter === "function") {
-        return await linkConverter(args);
-      }
-      return linkConverter ?? "";
     },
   });
 }
@@ -449,10 +451,7 @@ async function resolveDocHref({
   }
 
   const normalizedSegments = segments.filter(Boolean);
-  if (
-    normalizedSegments.length > 0 &&
-    normalizedSegments[normalizedSegments.length - 1] === "index"
-  ) {
+  if (normalizedSegments.length > 0 && normalizedSegments.at(-1) === "index") {
     normalizedSegments.pop();
   }
 

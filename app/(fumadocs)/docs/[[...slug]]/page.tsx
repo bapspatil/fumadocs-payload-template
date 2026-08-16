@@ -4,7 +4,10 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from "fumadocs-ui/page";
+  MarkdownCopyButton,
+  PageLastUpdate,
+  ViewOptionsPopover,
+} from "fumadocs-ui/layouts/docs/page";
 import { notFound } from "next/navigation";
 import { getPayload } from "payload";
 import VideoJSPlayer from "@/components/videojs-player";
@@ -12,8 +15,8 @@ import {
   extractTableOfContents,
   serializeLexical,
 } from "@/lib/lexical-serializer";
-import { source } from "@/lib/source";
-import { EditButton, LLMCopyButton } from "./page.client";
+import { getPageImageUrl, source } from "@/lib/source";
+import { EditButton } from "./page.client";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -25,25 +28,23 @@ export default async function Page(props: {
     notFound();
   }
 
-  // Get payload instance for content serialization
   const payload = await getPayload({ config });
-
-  // Serialize Lexical content to HTML
   const contentHtml = await serializeLexical(page.data.content, payload);
   const toc = extractTableOfContents(page.data.content);
+  const markdownUrl = `${page.url}.md`;
+  const lastUpdated = page.data.updatedAt
+    ? new Date(page.data.updatedAt)
+    : undefined;
 
   return (
-    <DocsPage
-      footer={{ enabled: false }}
-      tableOfContent={{ style: "normal", single: false }}
-      toc={toc}
-    >
+    <DocsPage tableOfContent={{ single: false, style: "clerk" }} toc={toc}>
       <DocsTitle className="font-bold font-serif text-4xl md:text-5xl">
         {page.data.title}
       </DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <div className="flex flex-row items-center gap-2 border-b pb-6">
-        <LLMCopyButton slug={params.slug ?? []} />
+        <MarkdownCopyButton markdownUrl={markdownUrl} />
+        <ViewOptionsPopover markdownUrl={markdownUrl} />
         <EditButton
           payloadUrl={`/admin/collections/docs/${String(page.data.id)}`}
         />
@@ -51,6 +52,7 @@ export default async function Page(props: {
       <DocsBody>
         <VideoJSPlayer html={contentHtml} />
       </DocsBody>
+      {lastUpdated ? <PageLastUpdate date={lastUpdated} /> : null}
     </DocsPage>
   );
 }
@@ -69,15 +71,14 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  const slugPath = params.slug?.join("/") || "";
-  const image = `/docs-og/${slugPath}/image.png`;
+  const image = getPageImageUrl(page).url;
 
   return {
-    title: page.data.title,
     description: page.data.description,
     openGraph: {
       images: image,
     },
+    title: page.data.title,
     twitter: {
       card: "summary_large_image",
       images: image,

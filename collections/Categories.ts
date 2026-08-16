@@ -2,62 +2,68 @@ import type { CollectionConfig } from "payload";
 import { validateSlug } from "@/lib/utils";
 
 export const Categories: CollectionConfig = {
-  slug: "categories",
-  admin: {
-    useAsTitle: "title",
-    defaultColumns: ["title", "slug", "order"],
-  },
   access: {
-    // Public read access for categories
-    read: () => true,
     // Owner and admins can create categories
     create: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
-      return user.role === "owner" || user.role === "admin";
-    },
-    // Owner and admins can update categories
-    update: ({ req: { user } }) => {
-      if (!(user && "role" in user)) return false;
+      if (!(user && "role" in user)) {
+        return false;
+      }
       return user.role === "owner" || user.role === "admin";
     },
     // Owner can always delete; admins can soft-delete (trash) but not permanently delete
     delete: ({ req: { user }, data }) => {
-      if (!(user && "role" in user)) return false;
-      if (user.role === "owner") return true;
-      if (user.role === "admin") return Boolean(data?.deletedAt);
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      if (user.role === "owner") {
+        return true;
+      }
+      if (user.role === "admin") {
+        return Boolean(data?.deletedAt);
+      }
       return false;
     },
+    // Public read access for categories
+    read: () => true,
+    // Owner and admins can update categories
+    update: ({ req: { user } }) => {
+      if (!(user && "role" in user)) {
+        return false;
+      }
+      return user.role === "owner" || user.role === "admin";
+    },
+  },
+  admin: {
+    defaultColumns: ["title", "slug", "order"],
+    useAsTitle: "title",
   },
   fields: [
     {
-      name: "title",
-      type: "text",
-      required: true,
       admin: {
         description: "The display title for this category/sidebar tab",
       },
+      name: "title",
+      required: true,
+      type: "text",
     },
     {
-      name: "slug",
-      type: "text",
-      required: true,
-      unique: true,
-      validate: validateSlug,
       admin: {
         description: "URL-friendly identifier",
       },
+      name: "slug",
+      required: true,
+      type: "text",
+      unique: true,
+      validate: validateSlug,
     },
     {
-      name: "description",
-      type: "textarea",
       admin: {
         description: "Brief description of this documentation category",
       },
+      name: "description",
+      type: "textarea",
     },
     {
-      name: "icon",
-      type: "upload",
-      relationTo: "media" as any,
       admin: {
         description: "Icon image for the category",
         position: "sidebar",
@@ -65,16 +71,34 @@ export const Categories: CollectionConfig = {
       filterOptions: {
         mimeType: { contains: "image" },
       },
+      name: "icon",
+      relationTo: "media" as any,
+      type: "upload",
     },
     {
-      name: "order",
-      type: "number",
-      required: true,
-      defaultValue: 0,
       admin: {
         description: "Order in which this category appears in the sidebar",
         position: "sidebar",
       },
+      defaultValue: 0,
+      name: "order",
+      required: true,
+      type: "number",
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        const { revalidateDocs } = await import("@/lib/revalidate-docs");
+        await revalidateDocs();
+      },
+    ],
+    afterDelete: [
+      async () => {
+        const { revalidateDocs } = await import("@/lib/revalidate-docs");
+        await revalidateDocs();
+      },
+    ],
+  },
+  slug: "categories",
 };

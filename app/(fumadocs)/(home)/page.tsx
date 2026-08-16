@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import VideoJSPlayer from "@/components/videojs-player";
+import { buildDocPath } from "@/lib/utils";
 import config from "@/payload.config";
 import type { Media } from "@/payload-types";
 
@@ -31,9 +32,9 @@ export default async function HomePage() {
 
   const { docs: categories } = await payload.find({
     collection: "categories",
-    sort: "order",
-    limit: 1000,
     depth: 1,
+    limit: 1000,
+    sort: "order",
   });
 
   // Get the first doc for each category to link to
@@ -41,6 +42,10 @@ export default async function HomePage() {
     categories.map(async (category) => {
       const { docs: categoryDocs } = await payload.find({
         collection: "docs",
+        depth: 1,
+        limit: 1000,
+        pagination: false,
+        sort: "order",
         where: {
           and: [
             {
@@ -64,13 +69,22 @@ export default async function HomePage() {
             },
           ],
         },
-        sort: "order",
-        limit: 1,
       });
+
+      const byId = new Map(
+        categoryDocs.map((doc) => [String(doc.id), doc] as const)
+      );
+      const firstDoc =
+        categoryDocs.find(
+          (doc) => doc.parent === null || doc.parent === undefined
+        ) ?? categoryDocs[0];
+      const docPath = firstDoc ? buildDocPath(firstDoc, byId) : "";
 
       return {
         ...category,
-        firstDoc: categoryDocs[0],
+        href: docPath
+          ? `/docs/${category.slug}/${docPath}`
+          : `/docs/${category.slug}`,
       };
     })
   );
@@ -109,12 +123,6 @@ export default async function HomePage() {
         ) : (
           <div className="flex flex-col justify-center gap-4 md:flex-row md:flex-wrap md:gap-6">
             {categoriesWithFirstDoc.map((category) => {
-              // Build the URL from category slug and first doc slug
-              const href = category.firstDoc
-                ? `/docs/${category.slug}/${category.firstDoc.slug}`
-                : `/docs/${category.slug}`;
-
-              // Get icon URL from media relationship
               const iconUrl =
                 typeof category.icon === "object" &&
                 category.icon !== null &&
@@ -125,7 +133,7 @@ export default async function HomePage() {
               return (
                 <Link
                   className="block w-full md:w-80"
-                  href={href}
+                  href={category.href}
                   key={category.id}
                 >
                   <Card className="transition-all hover:border-primary/50 hover:shadow-lg">

@@ -51,7 +51,8 @@ export function buildDocPath(doc: DocNode, byId: Map<string, unknown>): string {
       parent &&
       typeof parent === "object" &&
       "id" in (parent as Record<string, unknown>) &&
-      (parent as Record<string, unknown>).id != null
+      (parent as Record<string, unknown>).id !== null &&
+      (parent as Record<string, unknown>).id !== undefined
     ) {
       const next = byId.get(String((parent as Record<string, unknown>).id));
       current = isDocNode(next) ? next : null;

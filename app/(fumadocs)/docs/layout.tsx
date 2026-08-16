@@ -5,11 +5,10 @@ import { getSource } from "@/lib/source";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const source = await getSource();
-  const tree = source.pageTree;
 
   return (
     <DocsLayout
-      tree={tree}
+      tree={source.getPageTree()}
       {...baseOptions}
       sidebar={{
         prefetch: false,

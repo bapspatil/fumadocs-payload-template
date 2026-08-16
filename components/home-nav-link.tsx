@@ -10,12 +10,12 @@ export function HomeNavLink() {
         className="nav__link"
         href="/"
         style={{
-          display: "flex",
           alignItems: "center",
+          color: "var(--theme-text)",
+          display: "flex",
           gap: "0.5rem",
           padding: "0.75rem 1rem",
           textDecoration: "none",
-          color: "var(--theme-text)",
           transition: "all 0.2s ease",
         }}
       >

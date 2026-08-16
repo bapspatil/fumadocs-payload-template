@@ -1,12 +1,12 @@
+import { extractMarkdownFromLexical } from "@/lib/lexical-to-markdown";
 import type { source } from "@/lib/source";
 
-export async function getLLMText(
+export function getLLMText(
   page: NonNullable<Awaited<ReturnType<typeof source.getPage>>>
-) {
-  const processed = await page.data.getText("processed");
+): string {
+  const processed = extractMarkdownFromLexical(page.data.content);
 
-  return `# ${page.data.title}
-URL: ${page.url}
+  return `# ${page.data.title} (${page.url})
 
 ${processed}`;
 }

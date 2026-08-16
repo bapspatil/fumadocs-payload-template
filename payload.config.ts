@@ -13,21 +13,37 @@ import { Categories } from "./collections/Categories";
 import { Docs } from "./collections/Docs";
 import { Media } from "./collections/Media";
 import { Users } from "./collections/Users";
+import { getDocPreviewUrl } from "./lib/preview-url";
 import "dotenv/config";
 
 const filenameToPath = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filenameToPath);
+const useDatabaseTls =
+  process.env.PAYLOAD_DATABASE_TLS === "true" ||
+  Boolean(process.env.PAYLOAD_DATABASE_CA_FILE);
 
 export default buildConfig({
   admin: {
+    components: {
+      afterNavLinks: ["@/components/home-nav-link#HomeNavLink"],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    livePreview: {
+      collections: ["docs"],
+      url: ({ data, collectionConfig }) => {
+        if (collectionConfig?.slug === "docs") {
+          return getDocPreviewUrl(data);
+        }
+
+        return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      },
+    },
     meta: {
-      titleSuffix: " | Payload CMS Admin",
+      defaultOGImageType: "dynamic",
       description:
         "Admin panel for documentation - Manage your documentation and content.",
-      defaultOGImageType: "dynamic",
       icons: [
         {
           rel: "icon",
@@ -41,11 +57,9 @@ export default buildConfig({
         },
       ],
       robots: "noindex, nofollow",
+      titleSuffix: " | Payload CMS Admin",
     },
     theme: "light",
-    components: {
-      afterNavLinks: ["@/components/home-nav-link#HomeNavLink"],
-    },
   },
   collections: [Users, Media, Categories, Docs],
   cors: {
@@ -54,46 +68,86 @@ export default buildConfig({
   csrf: [process.env.NEXT_PUBLIC_APP_URL as string],
   db: mongooseAdapter({
     url: process.env.PAYLOAD_DATABASE_URI || "",
-    // Adjust connection options as needed
-    connectOptions: {
-      tls: true,
-      ssl: true,
-      ca: process.env.PAYLOAD_DATABASE_CA_FILE || "",
-      cert: process.env.PAYLOAD_DATABASE_CERT_FILE || "",
-      key: process.env.PAYLOAD_DATABASE_KEY_FILE || "",
-    },
+    ...(useDatabaseTls
+      ? {
+          connectOptions: {
+            ca: process.env.PAYLOAD_DATABASE_CA_FILE || undefined,
+            cert: process.env.PAYLOAD_DATABASE_CERT_FILE || undefined,
+            key: process.env.PAYLOAD_DATABASE_KEY_FILE || undefined,
+            ssl: true,
+            tls: true,
+          },
+        }
+      : {}),
   }),
   editor: lexicalEditor(),
-  email: nodemailerAdapter({
-    defaultFromAddress: "noreply@example.com",
-    defaultFromName: "Documentation",
-    // Nodemailer transportOptions
-    transportOptions: {
-      host: process.env.SMTP_HOST,
-      port: 587,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    },
-  }),
+  ...(process.env.SMTP_HOST
+    ? {
+        email: nodemailerAdapter({
+          defaultFromAddress: "noreply@example.com",
+          defaultFromName: "Documentation",
+          transportOptions: {
+            auth: {
+              pass: process.env.SMTP_PASS,
+              user: process.env.SMTP_USER,
+            },
+            host: process.env.SMTP_HOST,
+            port: 587,
+          },
+        }),
+      }
+    : {}),
   graphQL: {
     disable: false,
   },
   kv: databaseKVAdapter(),
   plugins: [
     importExportPlugin({
-      collections: [{ slug: "docs" }, { slug: "categories" }],
+      collections: [
+        {
+          export: { disableJobsQueue: true },
+          import: { disableJobsQueue: true },
+          slug: "docs",
+        },
+        {
+          export: { disableJobsQueue: true },
+          import: { disableJobsQueue: true },
+          slug: "categories",
+        },
+      ],
     }),
     mcpPlugin({
       collections: {
+        categories: {
+          description:
+            "Documentation categories that become isolated Fumadocs sidebar tabs.",
+          enabled: { create: false, delete: false, find: true, update: false },
+        },
         docs: {
+          description:
+            "Published documentation pages with Lexical rich text, category, parent, and order fields.",
           enabled: true,
-          description: "View and manage your documentation.",
+        },
+      },
+      mcp: {
+        serverOptions: {
+          instructions:
+            "This MCP server exposes a Fumadocs + Payload CMS documentation site. Prefer find on docs and categories. Doc content is Lexical JSON; public pages live at /docs/{category}/{...slug}. Markdown is available at the same path with a .md suffix, plus /llms.txt and /llms-full.txt.",
+          serverInfo: {
+            name: "FumaPayload Docs",
+            version: "1.4.0",
+          },
         },
       },
     }),
     searchPlugin({
+      beforeSync: ({ originalDoc, searchDoc }) => ({
+        ...searchDoc,
+        description:
+          typeof originalDoc.description === "string"
+            ? originalDoc.description
+            : "",
+      }),
       collections: ["docs"],
       defaultPriorities: {
         docs: 10,
@@ -102,16 +156,17 @@ export default buildConfig({
         fields: ({ defaultFields }) => [
           ...defaultFields,
           {
-            name: "description",
-            type: "textarea",
             admin: {
               position: "sidebar",
             },
+            name: "description",
+            type: "textarea",
           },
         ],
       },
     }),
     s3Storage({
+      bucket: process.env.S3_BUCKET || "",
       clientUploads: true,
       collections: {
         media: {
@@ -125,16 +180,17 @@ export default buildConfig({
           },
         },
       },
-      bucket: process.env.S3_BUCKET || "",
       config: {
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
         },
-        region: process.env.S3_REGION || "",
         endpoint: process.env.S3_ENDPOINT || "",
         forcePathStyle: process.env.S3_FORCE_PATH_STYLE === "true",
+        region: process.env.S3_REGION || "",
       },
+      enabled:
+        process.env.S3_ENABLED !== "false" && Boolean(process.env.S3_BUCKET),
     }),
   ],
   secret: process.env.PAYLOAD_SECRET || "",
